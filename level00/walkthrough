@@ -1,0 +1,16 @@
+level00@OverRide:~$ ./level00
+***********************************
+* 	     -Level00 -		  *
+***********************************
+Password:
+
+on cherche le mot de passe dans le code
+
+disas main :
+[...]
+   0x080484e3 <+79>:	mov    0x1c(%esp),%eax
+   0x080484e7 <+83>:	cmp    $0x149c,%eax  // ici = 5276
+   0x080484ec <+88>:	jne    0x804850d <main+121>
+[...]
+
+on le met dans le mdp demandé et nous avons accès au terminal
