@@ -1,0 +1,14 @@
+
+./level01
+********* ADMIN LOGIN PROMPT *********
+Enter Username:
+
+première mission trouver le mdp -> objdump -s ou hexdump -C on trouve "dat_wil"
+
+et pour le deuxieme on trouve le mdp "admin"
+mais aucun appel à systeme ou autre pour avoir un shell
+Et nous avons un buffer qu'on peut overflow sur le mdp alors nous allons faire
+un buffer overflow et mettre un shellcode à l'intérieur
+-> voir command
+
+Maintenant nous avons un shell et donc le mdp de l'exercice suivant
