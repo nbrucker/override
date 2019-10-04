@@ -1,0 +1,28 @@
+./level03
+***********************************
+*		level03		**
+***********************************
+Password:
+
+il nous faut donc trouver le mot de passe
+
+disas main
+[...]
+  0x080488c6 <+108>:	mov    0x1c(%esp),%eax
+  0x080488ca <+112>:	movl   $0x1337d00d,0x4(%esp) //// chiffre
+  0x080488d2 <+120>:	mov    %eax,(%esp)
+  0x080488d5 <+123>:	call   0x8048747 <test>
+[...]
+
+on remarque le chiffre `0x1337d00d` -> 322424845
+
+puis dans test
+[...]
+  0x08048759 <+18>:	mov    %eax,-0xc(%ebp)
+  0x0804875c <+21>:	cmpl   $0x15,-0xc(%ebp) //// une comparaison avec 0x15 soit 21
+  0x08048760 <+25>:	ja     0x804884a <test+259>
+[...]
+
+On remarque dans décrypte 0x11 répété un nombre de fois conséquent,
+et on trouve -> 0x1337d00d - 0x12 = 1337CFFB soit 322424827 on obtient le mdp
+et donc l'accès au terminal
