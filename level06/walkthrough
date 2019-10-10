@@ -1,0 +1,16 @@
+le programme nous demande login et serial
+
+ici tout va se passer dans gdb mais comme le program vérifie qu'on ne soit pas sur gdb, il faudra break et jump
+break *0x080487ba
+jump *0x80487ed
+
+on sait que le serial doit être un nombre positif car le scanf veut un %u
+
+dans la fonction auth le programme effectue beaucoup de commande incompréhensive et inutile à comprendre mais en rapport avec login
+les seuls éléments importants sont qu'il veut un login de plus de 5 caractères et composé de caractères ascii > 31
+
+on voit ici que le programme compare quelque chose à notre sérial et renvoie 0 si les 2 chiffres sont égaux:
+0x08048866 <+286>:   cmp    -0x10(%ebp),%eax
+
+il suffit donc de rentrer `aaaaaa` en login et n'importe quoi en sérial puis de regarder la valeur de -0x10(%ebp)
+une fois cette valeur récupérer entrer simplement `aaaaaa` en login et la valeur en sérial et vous aurez un shell !

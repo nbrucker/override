@@ -14,5 +14,5 @@ on doit donc la rentrer en 2 fois avec %hn pour l'écrire en short, d'abord `d68
 
 en testant avec des %x on se rends compte que notre input est à l'offset 10
 comme on doit faire 2 %hn notre première adresse sera à 10 et la seconde à 11
-pour `d68a` on doit mettre 54922 caractère avant car d68a = 54922 mais comme il y a aussi notre 8 bits d'adresse il suffit de rajouter %54914d
-pour `ffff` on doit mettre 65535 caractère avant car ffff = 65535 mais comme il y a avant 54922 caractère il suffit de rajouter %10613d (65535 - 54922)
+pour `d68a` on doit mettre 54922 caractères avant car d68a = 54922 mais comme il y a aussi nos 8 bits d'adresse il suffit de rajouter %54914d
+pour `ffff` on doit mettre 65535 caractères avant car ffff = 65535 mais comme il y a avant 54922 caractères il suffit de rajouter %10613d (65535 - 54922)
