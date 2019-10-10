@@ -1,0 +1,18 @@
+on remarque tout de suite qu'on peut utiliser un format string exploit pour remplacer exit par ce que l'on veut
+
+on récupere donc l'adresse avec objdump -R ./level05
+080497e0 R_386_JUMP_SLOT   exit
+
+on mettra notre shellcode dans le buffer on doit donc en récuperer l'adresse avec ltrace
+fgets(aaaaa
+"aaaaa\n", 100, 0xf7fcfac0)                                         = 0xffffd668
+
+pour le reste des explications on prendra en compte que notre adresse est 0xffffd68a car le shellcode sera ici étant donné que l'on doit mettre le string exploit avant
+
+le problème ici est que l'adresse une fois mise en décimal `4294956682` est bien trop grande pour un simple string exploit
+on doit donc la rentrer en 2 fois avec %hn pour l'écrire en short, d'abord `d68a` puis `ffff`
+
+en testant avec des %x on se rends compte que notre input est à l'offset 10
+comme on doit faire 2 %hn notre première adresse sera à 10 et la seconde à 11
+pour `d68a` on doit mettre 54922 caractère avant car d68a = 54922 mais comme il y a aussi notre 8 bits d'adresse il suffit de rajouter %54914d
+pour `ffff` on doit mettre 65535 caractère avant car ffff = 65535 mais comme il y a avant 54922 caractère il suffit de rajouter %10613d (65535 - 54922)
