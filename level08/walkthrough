@@ -1,0 +1,15 @@
+On se trouve devant un programme qui ouvre un fichier et qu'il l'écris dans le dossier backups
+
+Afin de pouvoir lire le fichier qui se trouvera dans backups on crée un nouveau dossier dans /tmp
+
+mais nous ce que nous voulons c'est /home/users/level09/.pass
+
+et le programme vérifie qu'il existe bien dans backups avant donc
+
+mkdir -p /backups/home/users/level09/
+
+nous avons le dossier ou se trouvera le pass il nous manque plus qu'a lancé le programme
+
+~/level08 /home/users/level09/.pass
+
+puis nous avons le mdp dans /tmp/backups/home/users/level09/.pass 
